@@ -55,11 +55,19 @@ class Program
                     var relativePath = subFolder.Substring(folderPath.Length + 1);
                     var newFolderPath = Path.Combine(parentFolder.FullName, relativePath);
                     if (!Directory.Exists(newFolderPath))
+                    {
                         Directory.Move(subFolder, newFolderPath);
+                    }
                 }
 
                 // 刪除子資料夾
-                Directory.Delete(folderPath);
+                if (Directory.Exists(folderPath))
+                {
+                    if (Directory.GetFiles(folderPath).Length == 0)
+                    {
+                        Directory.Delete(folderPath, true);
+                    }
+                }
 
                 folderName = parentFolder.FullName;
                 parentFolder = parentFolder.Parent;
